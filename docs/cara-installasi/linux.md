@@ -118,7 +118,36 @@ GRANT ALL PRIVILEGES ON DATABASE cbt_db TO cbt_user;
 exit
 ```
 
-## 4. Setup Aplikasi CBT
+## 4. Import Data SQL
+
+1. **Cari file SQL:**
+   - Di folder CBT yang sudah diextract, cari file `exo-dump-master.sql`
+   - File ini biasanya berada di root direktori CBT
+
+2. **Import data menggunakan psql command line:**
+   ```bash
+   # Pastikan Anda berada di direktori yang berisi file SQL
+   cd /var/www/cbt
+   
+   # Import data ke database cbt_db menggunakan user cbt_user
+   sudo -u cbt_user psql cbt_db < exo-dump-master.sql
+   ```
+
+3. **Verifikasi import:**
+   ```bash
+   # Masuk ke database untuk memverifikasi tabel sudah terimport
+   sudo -u cbt_user psql cbt_db -c "\dt"
+   
+   # Anda seharusnya melihat daftar tabel seperti pesertas, banksoals, dll.
+   ```
+
+**Catatan Import SQL:**
+- Pastikan file `exo-dump-master.sql` ada di direktori CBT
+- Proses import mungkin memerlukan waktu beberapa menit tergantung ukuran data
+- Jika terjadi error, periksa permission user `cbt_user` terhadap database `cbt_db`
+- Untuk user `postgres` (default), gunakan: `sudo -u postgres psql cbt_db < exo-dump-master.sql`
+
+## 5. Setup Aplikasi CBT
 
 1. Pastikan Anda berada di direktori CBT:
 
@@ -139,7 +168,7 @@ sudo chmod -R 775 storage
 - Pastikan untuk mengubah `STORAGE_PATH` di file `.env` sesuai dengan path yang digunakan
 - Direktori storage harus memiliki kapasitas yang cukup untuk menyimpan semua data ujian
 
-## 5. Konfigurasi File .env
+## 6. Konfigurasi File .env
 
 1. Edit file .env dengan text editor pilihan Anda:
 
@@ -170,7 +199,7 @@ STORAGE_PATH=/var/www/cbt/storage
 - `STORAGE_PATH` harus mengarah ke direktori yang sudah dibuat dan memiliki permission yang tepat
 - Untuk keamanan, gunakan password yang kuat untuk database (`DB_PASS`)
 
-## 6. Menjalankan Aplikasi
+## 7. Menjalankan Aplikasi
 
 1. Berikan permission eksekusi pada file binary:
 
@@ -201,7 +230,7 @@ Version:  4.7.0-ROSETTA-RELEASE
 
 4. Buka browser dan akses `http://localhost:9988` untuk memverifikasi instalasi.
 
-## 7. Setup Systemd Service (Opsional)
+## 8. Setup Systemd Service (Opsional)
 
 Untuk menjalankan CBT sebagai service di background dan auto-start saat boot:
 
@@ -264,7 +293,7 @@ sudo systemctl status cbt.service
 - Untuk disable auto-start: `sudo systemctl disable cbt.service`
 
 
-## 8. Troubleshooting
+## 9. Troubleshooting
 
 ### PostgreSQL Connection Error
 - Pastikan PostgreSQL berjalan: `sudo systemctl status postgresql`
@@ -286,7 +315,7 @@ sudo systemctl status cbt.service
 - Pastikan `SERVER_SECRET_LICENSE_KEY` di file .env sesuai dengan license dari ecosystem
 - Verifikasi koneksi internet untuk validasi license
 
-## 9. Verifikasi Instalasi
+## 10. Verifikasi Instalasi
 
 1. Cek apakah service berjalan:
 

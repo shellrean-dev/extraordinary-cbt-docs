@@ -35,8 +35,8 @@ User database yang digunakan pada konfigurasi `.env` tidak memiliki akses ke tab
 3. **Gunakan user root (postgres)**:
    Ubah konfigurasi di file `.env` untuk menggunakan user `postgres`:
    ```
-   DB_USERNAME=postgres
-   DB_PASSWORD=password_postgres
+   DB_USER=postgres
+   DB_PASS=password_postgres
    ```
 
 **Catatan:** Ganti `nama_user` dengan username database yang Anda gunakan di konfigurasi `.env`.
